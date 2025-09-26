@@ -27,16 +27,19 @@ export class BookListComponent implements OnInit {
 
   // Método para carregar os livros da API
   loadBooks(): void {
-    this.isLoading = true; // Começamos a carregar
-    this.bookService.getBooks().subscribe({
-      next: (data) => {
-        this.books = data; // Sucesso: armazenamos os livros
-        this.isLoading = false; // Paramos de carregar
-      },
-      error: (err) => {
-        console.error('Failed to load books', err); // Erro: mostramos no console
-        this.isLoading = false; // Paramos de carregar
-      }
-    });
-  }
+  console.log('1. Starting to load books...');
+  this.isLoading = true;
+  this.bookService.getBooks().subscribe({
+    next: (data) => {
+      console.log('2. Successfully received data:', data); // Vamos ver o que chegou
+      this.books = data;
+      this.isLoading = false;
+      console.log('3. Finished loading. isLoading is now:', this.isLoading, 'books.length is:', this.books.length);
+    },
+    error: (err) => {
+      console.error('2. Failed to load books', err);
+      this.isLoading = false;
+    }
+  });
+}
 }
