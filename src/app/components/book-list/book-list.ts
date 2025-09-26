@@ -1,45 +1,49 @@
 // File: src/app/components/book-list/book-list.component.ts
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Book, BookService } from '../../services/book'; // Importamos nosso serviço e a interface
+
+// 1. Importe o ChangeDetectorRef
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Book, BookService } from '../../services/book';
 
 @Component({
   selector: 'app-book-list',
-  standalone: true, // Este componente é standalone
-  imports: [CommonModule], // Precisamos do CommonModule para usar diretivas como *ngFor
+  standalone: true,
+  imports: [],
   templateUrl: './book-list.html',
   styleUrls: ['./book-list.css']
 })
 export class BookListComponent implements OnInit {
 
-  // Uma propriedade para armazenar a lista de livros que virá da API
   books: Book[] = [];
-  // Uma propriedade para sabermos se estamos carregando os dados
   isLoading = true;
 
-  // Injetamos nosso BookService no construtor
-  constructor(private bookService: BookService) { }
+  // 2. Injete o ChangeDetectorRef no construtor
+  constructor(
+    private bookService: BookService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
-  // ngOnInit é um "gancho de ciclo de vida" que roda automaticamente quando o componente é criado
   ngOnInit(): void {
     this.loadBooks();
   }
 
-  // Método para carregar os livros da API
   loadBooks(): void {
-  console.log('1. Starting to load books...');
-  this.isLoading = true;
-  this.bookService.getBooks().subscribe({
-    next: (data) => {
-      console.log('2. Successfully received data:', data); // Vamos ver o que chegou
-      this.books = data;
-      this.isLoading = false;
-      console.log('3. Finished loading. isLoading is now:', this.isLoading, 'books.length is:', this.books.length);
-    },
-    error: (err) => {
-      console.error('2. Failed to load books', err);
-      this.isLoading = false;
-    }
-  });
-}
+    this.isLoading = true;
+    this.bookService.getBooks().subscribe({
+      next: (data) => {
+        // Atualizamos nossas variáveis normalmente
+        this.books = data;
+        this.isLoading = false;
+
+        // 3. COMANDO FINAL: Forçamos a detecção de mudanças
+        // Dizemos ao Angular: "Acredite em mim, o estado mudou. Verifique este componente e o atualize na tela."
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load books', err);
+        this.isLoading = false;
+        // Também é uma boa prática forçar aqui em caso de erro
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }
