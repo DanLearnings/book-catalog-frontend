@@ -18,7 +18,7 @@ COPY . .
 
 # Constrói a aplicação Angular para produção.
 # O resultado será colocado na pasta /app/dist/book-catalog-frontend/browser
-RUN npm run build
+RUN npm run build -- --configuration=production
 
 
 # =================================================================

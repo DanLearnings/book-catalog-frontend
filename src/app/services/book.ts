@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // Define uma interface para o nosso objeto 'Book'.
 // Isso nos dá tipagem forte e autocompletar no código.
@@ -20,7 +21,7 @@ export class BookService {
 
   // A URL base da nossa API.
   // O Angular fará as chamadas para http://localhost:8080/api/v1/books
-  private apiUrl = 'http://localhost:8080/api/v1/books';
+   private apiUrl = `${environment.apiUrl}/books`;
 
   // Injeção de dependência do HttpClient
   constructor(private http: HttpClient) { }
