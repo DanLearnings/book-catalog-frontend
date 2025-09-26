@@ -1,0 +1,35 @@
+<!-- File: src/app/components/book-list/book-list.component.html -->
+<div class="book-list-container">
+  <h2>Book Catalog</h2>
+
+  <!-- Mostra uma mensagem de carregamento enquanto os dados não chegam -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading books...</p>
+  </div>
+
+  <!-- Mostra a tabela de livros apenas se não estiver carregando E se houver livros -->
+  <table *ngIf="!isLoading && books.length > 0" class="book-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Year</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- O *ngFor faz um loop no nosso array 'books' e cria uma linha (<tr>) para cada livro -->
+      <tr *ngFor="let book of books">
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.publicationYear }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mostra uma mensagem se não estiver carregando E a lista estiver vazia -->
+  <div *ngIf="!isLoading && books.length === 0" class="no-books">
+    <p>No books found in the catalog. Why not add one?</p>
+  </div>
+</div>
